@@ -20,6 +20,18 @@ var stazeLayer = L.geoJSON(null, {
     if (tezina === "teska") boja = "red";
 
     return { color: boja, weight: 4 };
+  },
+
+  onEachFeature: function(feature, layer) {
+    let p = feature.properties;
+
+    layer.bindPopup(`
+      <b>${p.naziv}</b><br>
+      ${p.opis_SRB || ""}
+      <br>Dužina: ${p.duzina_km} km
+      <br>Trajanje: ${p.trajanje}
+      <br>Visinska razlika: ${p.visinska_r} m
+    `);
   }
 }).addTo(map);
 
@@ -43,14 +55,11 @@ var lokacijeLayer = L.geoJSON(null, {
 
   onEachFeature: function(feature, layer) {
     let p = feature.properties;
-    let lat = feature.geometry.coordinates[1];
-    let lng = feature.geometry.coordinates[0];
 
     layer.bindPopup(`
       <b>${p.Naziv}</b><br>
       ${p.Slika ? `<img src="${p.Slika}">` : ""}
       <p>${p.Opis_SRB || ""}</p>
-      <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">🧭 Idi ovde</a>
     `);
   }
 
@@ -64,22 +73,21 @@ fetch("data/lokacije.geojson")
 // ---------------- TURIZAM ----------------
 
 var turizamLayer = L.geoJSON(null, {
+
   pointToLayer: function(feature, latlng) {
     return L.marker(latlng);
   },
 
   onEachFeature: function(feature, layer) {
     let p = feature.properties;
-    let lat = feature.geometry.coordinates[1];
-    let lng = feature.geometry.coordinates[0];
 
     layer.bindPopup(`
       <b>${p.naziv}</b><br>
       ${p.slika ? `<img src="${p.slika}">` : ""}
       <p>${p.opis_srb || ""}</p>
-      <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">🧭 Idi ovde</a>
     `);
   }
+
 }).addTo(map);
 
 fetch("data/turizam.geojson")
@@ -90,29 +98,22 @@ fetch("data/turizam.geojson")
 // ---------------- GPS ----------------
 
 document.getElementById("gpsBtn").onclick = function() {
+
   map.locate({ setView: true, maxZoom: 16 });
 
   map.on('locationfound', function(e) {
-    L.marker(e.latlng).addTo(map)
+
+    if (window.gpsMarker) {
+      map.removeLayer(window.gpsMarker);
+    }
+
+    window.gpsMarker = L.marker(e.latlng).addTo(map)
       .bindPopup("📍 Vi ste ovde")
       .openPopup();
   });
-};
 
-
-// ---------------- SEARCH ----------------
-
-document.getElementById("searchBtn").onclick = function() {
-
-  let query = document.getElementById("searchBox").value.toLowerCase();
-
-  lokacijeLayer.eachLayer(layer => {
-    let naziv = layer.feature.properties.Naziv.toLowerCase();
-
-    if (naziv.includes(query)) {
-      map.setView(layer.getLatLng(), 16);
-      layer.openPopup();
-    }
+  map.on('locationerror', function() {
+    alert("Ne može da pronađe lokaciju");
   });
 };
 

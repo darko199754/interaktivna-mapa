@@ -40,7 +40,7 @@ fetch("data/staze.geojson")
   .then(data => stazeLayer.addData(data));
 
 
-// ---------------- LOKACIJE ----------------
+// ---------------- LOKACIJE (IKONICE + AUDIO + NAVIGACIJA) ----------------
 
 var lokacijeLayer = L.geoJSON(null, {
 
@@ -63,10 +63,20 @@ var lokacijeLayer = L.geoJSON(null, {
 
     layer.bindPopup(`
       <b>${p.Naziv}</b><br>
+
       ${p.Slika ? `<img src="${p.Slika}">` : ""}
+
       <p>${p.Opis_SRB || ""}</p>
 
+      ${p.Audio ? `
+        <audio controls>
+          <source src="${p.Audio}" type="audio/mpeg">
+          Vaš browser ne podržava audio.
+        </audio>
+      ` : ""}
+
       <br>
+
       <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">
         🧭 Idi ovde
       </a>
@@ -80,7 +90,7 @@ fetch("data/lokacije.geojson")
   .then(data => lokacijeLayer.addData(data));
 
 
-// ---------------- TURIZAM (FIX IKONICE) ----------------
+// ---------------- TURIZAM ----------------
 
 var turizamLayer = L.geoJSON(null, {
 
@@ -107,6 +117,7 @@ var turizamLayer = L.geoJSON(null, {
       <p>${p.opis_srb || ""}</p>
 
       <br>
+
       <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">
         🧭 Idi ovde
       </a>

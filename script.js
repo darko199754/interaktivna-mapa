@@ -20,18 +20,6 @@ var stazeLayer = L.geoJSON(null, {
     if (tezina === "teska") boja = "red";
 
     return { color: boja, weight: 4 };
-  },
-
-  onEachFeature: function(feature, layer) {
-    let p = feature.properties;
-
-    layer.bindPopup(`
-      <b>${p.naziv}</b><br>
-      ${p.opis_SRB || ""}
-      <br>Dužina: ${p.duzina_km} km
-      <br>Trajanje: ${p.trajanje}
-      <br>Visinska razlika: ${p.visinska_r} m
-    `);
   }
 }).addTo(map);
 
@@ -40,22 +28,14 @@ fetch("data/staze.geojson")
   .then(data => stazeLayer.addData(data));
 
 
-// ---------------- LOKACIJE (IKONICE) ----------------
+// ---------------- LOKACIJE ----------------
 
 var lokacijeLayer = L.geoJSON(null, {
 
   pointToLayer: function(feature, latlng) {
-
-    let iconPath = "icons/default.svg";
-
-    // sigurnosni fallback
-    if (feature.properties && feature.properties.Ikonica) {
-      iconPath = feature.properties.Ikonica;
-    }
-
     return L.marker(latlng, {
       icon: L.icon({
-        iconUrl: iconPath,
+        iconUrl: feature.properties.Ikonica || "icons/default.png",
         iconSize: [32, 32]
       })
     });
@@ -63,11 +43,14 @@ var lokacijeLayer = L.geoJSON(null, {
 
   onEachFeature: function(feature, layer) {
     let p = feature.properties;
+    let lat = feature.geometry.coordinates[1];
+    let lng = feature.geometry.coordinates[0];
 
     layer.bindPopup(`
       <b>${p.Naziv}</b><br>
       ${p.Slika ? `<img src="${p.Slika}">` : ""}
       <p>${p.Opis_SRB || ""}</p>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">🧭 Idi ovde</a>
     `);
   }
 
@@ -87,11 +70,14 @@ var turizamLayer = L.geoJSON(null, {
 
   onEachFeature: function(feature, layer) {
     let p = feature.properties;
+    let lat = feature.geometry.coordinates[1];
+    let lng = feature.geometry.coordinates[0];
 
     layer.bindPopup(`
       <b>${p.naziv}</b><br>
       ${p.slika ? `<img src="${p.slika}">` : ""}
       <p>${p.opis_srb || ""}</p>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">🧭 Idi ovde</a>
     `);
   }
 }).addTo(map);
@@ -99,6 +85,36 @@ var turizamLayer = L.geoJSON(null, {
 fetch("data/turizam.geojson")
   .then(res => res.json())
   .then(data => turizamLayer.addData(data));
+
+
+// ---------------- GPS ----------------
+
+document.getElementById("gpsBtn").onclick = function() {
+  map.locate({ setView: true, maxZoom: 16 });
+
+  map.on('locationfound', function(e) {
+    L.marker(e.latlng).addTo(map)
+      .bindPopup("📍 Vi ste ovde")
+      .openPopup();
+  });
+};
+
+
+// ---------------- SEARCH ----------------
+
+document.getElementById("searchBtn").onclick = function() {
+
+  let query = document.getElementById("searchBox").value.toLowerCase();
+
+  lokacijeLayer.eachLayer(layer => {
+    let naziv = layer.feature.properties.Naziv.toLowerCase();
+
+    if (naziv.includes(query)) {
+      map.setView(layer.getLatLng(), 16);
+      layer.openPopup();
+    }
+  });
+};
 
 
 // ---------------- FILTER ----------------
@@ -117,39 +133,24 @@ function filterMap() {
     let tip = layer.feature.properties.tip;
     let tezina = layer.feature.properties.tezina;
 
-    let tipMatch = tipovi.some(t => tip.includes(t));
-    let tezinaMatch = tezine.includes(tezina);
-
-    if (tipMatch && tezinaMatch) {
+    if (tipovi.some(t => tip.includes(t)) && tezine.includes(tezina)) {
       layer.addTo(map);
     } else {
       map.removeLayer(layer);
     }
   });
 
-  if (document.getElementById("lokacijeToggle").checked) {
-    map.addLayer(lokacijeLayer);
-  } else {
-    map.removeLayer(lokacijeLayer);
-  }
+  if (document.getElementById("lokacijeToggle").checked) map.addLayer(lokacijeLayer);
+  else map.removeLayer(lokacijeLayer);
 
-  if (document.getElementById("turizamToggle").checked) {
-    map.addLayer(turizamLayer);
-  } else {
-    map.removeLayer(turizamLayer);
-  }
+  if (document.getElementById("turizamToggle").checked) map.addLayer(turizamLayer);
+  else map.removeLayer(turizamLayer);
 }
 
 
 // ---------------- FILTER PANEL ----------------
 
-const btn = document.getElementById("filterBtn");
-const panel = document.getElementById("filterPanel");
-
-btn.addEventListener("click", () => {
+document.getElementById("filterBtn").onclick = function() {
+  let panel = document.getElementById("filterPanel");
   panel.style.display = panel.style.display === "block" ? "none" : "block";
-});
-
-map.on('click', function() {
-  panel.style.display = "none";
-});
+};

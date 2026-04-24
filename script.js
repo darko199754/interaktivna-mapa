@@ -2,8 +2,10 @@
 
 var map = L.map('map').setView([43.285, 20.879], 13);
 
+// 🔥 TRANSPARENTNA MAPA (balansirana vrednost)
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: 'OpenStreetMap'
+  attribution: 'OpenStreetMap',
+  opacity: 0.6   // 👈 ključna stvar
 }).addTo(map);
 
 
@@ -112,14 +114,12 @@ function filterMap() {
     }
   });
 
-  // lokacije
   if (document.getElementById("lokacijeToggle").checked) {
     map.addLayer(lokacijeLayer);
   } else {
     map.removeLayer(lokacijeLayer);
   }
 
-  // turizam
   if (document.getElementById("turizamToggle").checked) {
     map.addLayer(turizamLayer);
   } else {

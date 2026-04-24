@@ -34,31 +34,10 @@ html, body {
   cursor: pointer;
 }
 
-/* Search */
-#searchBox {
-  position: absolute;
-  top: 110px;
-  right: 10px;
-  z-index: 1100;
-  padding: 8px;
-  width: 140px;
-}
-
-#searchBtn {
-  position: absolute;
-  top: 110px;
-  right: 160px;
-  z-index: 1100;
-  padding: 8px;
-  background: #2980b9;
-  color: white;
-  border: none;
-}
-
 /* Filter panel */
 .filters {
   position: absolute;
-  top: 160px;
+  top: 110px;
   right: 10px;
   background: white;
   padding: 12px;

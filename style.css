@@ -7,22 +7,38 @@ html, body {
   height: 100vh;
 }
 
-/* Filter panel */
-.filters {
+/* Dugme */
+#filterBtn {
   position: absolute;
   top: 10px;
-  left: 10px;
+  right: 10px;
+  z-index: 1100;
+  padding: 10px 14px;
+  background: #2c3e50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* Panel */
+.filters {
+  position: absolute;
+  top: 60px;
+  right: 10px;
   background: white;
   padding: 12px;
   z-index: 1000;
-  max-height: 90vh;
+  max-height: 80vh;
   overflow-y: auto;
   border-radius: 10px;
   font-size: 14px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  display: none;
 }
 
-/* Popup styling */
+/* Popup slike */
 .leaflet-popup-content img {
   width: 100%;
   border-radius: 6px;

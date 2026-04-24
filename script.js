@@ -2,7 +2,6 @@
 
 var map = L.map('map').setView([43.285, 20.879], 13);
 
-// 🔥 LIGHT MAPA (umesto transparency)
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap & Carto'
 }).addTo(map);
@@ -41,11 +40,25 @@ fetch("data/staze.geojson")
   .then(data => stazeLayer.addData(data));
 
 
-// ---------------- LOKACIJE ----------------
+// ---------------- LOKACIJE (IKONICE) ----------------
 
 var lokacijeLayer = L.geoJSON(null, {
+
   pointToLayer: function(feature, latlng) {
-    return L.marker(latlng);
+
+    let iconPath = "icons/default.svg";
+
+    // sigurnosni fallback
+    if (feature.properties && feature.properties.Ikonica) {
+      iconPath = feature.properties.Ikonica;
+    }
+
+    return L.marker(latlng, {
+      icon: L.icon({
+        iconUrl: iconPath,
+        iconSize: [32, 32]
+      })
+    });
   },
 
   onEachFeature: function(feature, layer) {
@@ -57,6 +70,7 @@ var lokacijeLayer = L.geoJSON(null, {
       <p>${p.Opis_SRB || ""}</p>
     `);
   }
+
 }).addTo(map);
 
 fetch("data/lokacije.geojson")

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Interaktivna mapa Brzeće</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<div id="map"></div>
+
+<div class="filters">
+  <h3>Filteri</h3>
+
+  <b>Tip staze</b><br>
+  <label><input type="checkbox" value="pesacka" checked> Pešačka</label><br>
+  <label><input type="checkbox" value="biciklisticka" checked> Biciklistička</label><br>
+  <label><input type="checkbox" value="kvad" checked> Kvad</label><br><br>
+
+  <b>Težina</b><br>
+  <label><input type="checkbox" value="laka" checked> Laka</label><br>
+  <label><input type="checkbox" value="srednja" checked> Srednja</label><br>
+  <label><input type="checkbox" value="teska" checked> Teška</label><br><br>
+
+  <b>Lokacije</b><br>
+  <label><input type="checkbox" id="lokacijeToggle" checked> Prikaži</label><br>
+
+  <b>Turizam</b><br>
+  <label><input type="checkbox" id="turizamToggle" checked> Prikaži</label>
+
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

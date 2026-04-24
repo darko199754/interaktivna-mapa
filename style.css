@@ -7,7 +7,6 @@ html, body {
   height: 100vh;
 }
 
-/* Filter dugme */
 #filterBtn {
   position: absolute;
   top: 10px;
@@ -20,7 +19,6 @@ html, body {
   border: none;
 }
 
-/* GPS dugme */
 #gpsBtn {
   position: absolute;
   top: 60px;
@@ -34,7 +32,6 @@ html, body {
   cursor: pointer;
 }
 
-/* Filter panel */
 .filters {
   position: absolute;
   top: 110px;

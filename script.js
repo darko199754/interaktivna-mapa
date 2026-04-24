@@ -2,10 +2,9 @@
 
 var map = L.map('map').setView([43.285, 20.879], 13);
 
-// 🔥 TRANSPARENTNA MAPA (balansirana vrednost)
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: 'OpenStreetMap',
-  opacity: 0.6   // 👈 ključna stvar
+// 🔥 LIGHT MAPA (umesto transparency)
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap & Carto'
 }).addTo(map);
 
 
@@ -128,7 +127,7 @@ function filterMap() {
 }
 
 
-// ---------------- POPUP FILTER ----------------
+// ---------------- FILTER PANEL ----------------
 
 const btn = document.getElementById("filterBtn");
 const panel = document.getElementById("filterPanel");

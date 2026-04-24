@@ -40,14 +40,17 @@ fetch("data/staze.geojson")
   .then(data => stazeLayer.addData(data));
 
 
-// ---------------- LOKACIJE (NAVIGACIJA) ----------------
+// ---------------- LOKACIJE ----------------
 
 var lokacijeLayer = L.geoJSON(null, {
 
   pointToLayer: function(feature, latlng) {
+
+    let iconPath = feature.properties.Ikonica || "icons/default.png";
+
     return L.marker(latlng, {
       icon: L.icon({
-        iconUrl: feature.properties.Ikonica || "icons/default.png",
+        iconUrl: iconPath,
         iconSize: [32, 32]
       })
     });
@@ -77,14 +80,17 @@ fetch("data/lokacije.geojson")
   .then(data => lokacijeLayer.addData(data));
 
 
-// ---------------- TURIZAM (NAVIGACIJA) ----------------
+// ---------------- TURIZAM (FIX IKONICE) ----------------
 
 var turizamLayer = L.geoJSON(null, {
 
   pointToLayer: function(feature, latlng) {
+
+    let iconPath = feature.properties.Ikonica || "icons/default.png";
+
     return L.marker(latlng, {
       icon: L.icon({
-        iconUrl: feature.properties.Ikonica || "icons/default.png",
+        iconUrl: iconPath,
         iconSize: [40, 40]
       })
     });

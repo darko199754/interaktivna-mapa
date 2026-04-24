@@ -11,34 +11,36 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
 
 var stazeLayer = L.geoJSON(null, {
   style: function(feature) {
+    let tezina = feature.properties?.tezina || "";
     let boja = "blue";
 
-    if (feature.properties.tezina === "laka") boja = "green";
-    if (feature.properties.tezina === "srednja") boja = "orange";
-    if (feature.properties.tezina === "teska") boja = "red";
+    if (tezina === "laka") boja = "green";
+    if (tezina === "srednja") boja = "orange";
+    if (tezina === "teska") boja = "red";
 
     return { color: boja, weight: 4 };
   },
 
   onEachFeature: function(feature, layer) {
-    let p = feature.properties;
+    let p = feature.properties || {};
 
     layer.bindPopup(`
-      <h3>${p.naziv}</h3>
+      <h3>${p.naziv || ""}</h3>
       ${p.opis_SRB || ""}
-      <br><b>Dužina:</b> ${p.duzina_km} km
-      <br><b>Trajanje:</b> ${p.trajanje}
-      <br><b>Visinska razlika:</b> ${p.visinska_r} m
+      <br><b>Dužina:</b> ${p.duzina_km || ""} km
+      <br><b>Trajanje:</b> ${p.trajanje || ""}
+      <br><b>Visinska razlika:</b> ${p.visinska_r || ""} m
     `);
   }
 }).addTo(map);
 
 fetch("data/staze.geojson")
   .then(res => res.json())
-  .then(data => stazeLayer.addData(data));
+  .then(data => stazeLayer.addData(data))
+  .catch(err => console.log("GRESKA STAZE:", err));
 
 
-// ---------------- LOKACIJE (SVG AUTOMATSKI) ----------------
+// ---------------- LOKACIJE (SVG FIX) ----------------
 
 const iconsMap = {
   "vodopad": "icons/vodopad.svg",
@@ -49,21 +51,26 @@ const iconsMap = {
   "izvor": "icons/izvor.svg",
   "jezero": "icons/jezero.svg",
   "rudnik": "icons/rudnik.svg",
-  "pećina": "icons/pecina.svg",
+  "pecina": "icons/pecina.svg",
   "gejzir": "icons/gejzir.svg",
-  "arheološko nalazište": "icons/arheologija.svg",
+  "arheologija": "icons/arheologija.svg",
   "ski staza": "icons/ski.svg",
-  "gondola": "icons/gondola.svg",
-  "default": "icons/spomenik.svg"
+  "gondola": "icons/gondola.svg"
 };
 
 var lokacijeLayer = L.geoJSON(null, {
 
   pointToLayer: function(feature, latlng) {
 
-    let podkat = (feature.properties.Podkategor || "").toLowerCase();
+    let podkat = "";
 
-    let iconPath = iconsMap[podkat] || iconsMap["default"];
+    try {
+      podkat = (feature.properties?.Podkategor || "").toLowerCase();
+    } catch(e) {
+      podkat = "";
+    }
+
+    let iconPath = iconsMap[podkat] || "icons/spomenik.svg";
 
     return L.marker(latlng, {
       icon: L.icon({
@@ -74,10 +81,10 @@ var lokacijeLayer = L.geoJSON(null, {
   },
 
   onEachFeature: function(feature, layer) {
-    let p = feature.properties;
+    let p = feature.properties || {};
 
     layer.bindPopup(`
-      <h3>${p.Naziv}</h3>
+      <h3>${p.Naziv || ""}</h3>
       ${p.Slika ? `<img src="${p.Slika}">` : ""}
       <p>${p.Opis_SRB || ""}</p>
       ${p.audio_SRB ? `<audio controls src="${p.audio_SRB}"></audio>` : ""}
@@ -88,7 +95,8 @@ var lokacijeLayer = L.geoJSON(null, {
 
 fetch("data/lokacije.geojson")
   .then(res => res.json())
-  .then(data => lokacijeLayer.addData(data));
+  .then(data => lokacijeLayer.addData(data))
+  .catch(err => console.log("GRESKA LOKACIJE:", err));
 
 
 // ---------------- TURIZAM ----------------
@@ -100,10 +108,10 @@ var turizamLayer = L.geoJSON(null, {
   },
 
   onEachFeature: function(feature, layer) {
-    let p = feature.properties;
+    let p = feature.properties || {};
 
     layer.bindPopup(`
-      <h3>${p.naziv}</h3>
+      <h3>${p.naziv || ""}</h3>
       ${p.slika ? `<img src="${p.slika}">` : ""}
       <p>${p.opis_srb || ""}</p>
       📞 ${p.telefon || ""}
@@ -116,7 +124,8 @@ var turizamLayer = L.geoJSON(null, {
 
 fetch("data/turizam.geojson")
   .then(res => res.json())
-  .then(data => turizamLayer.addData(data));
+  .then(data => turizamLayer.addData(data))
+  .catch(err => console.log("GRESKA TURIZAM:", err));
 
 
 // ---------------- FILTER ----------------
@@ -132,8 +141,8 @@ function filterMap() {
 
   stazeLayer.eachLayer(layer => {
 
-    let tip = layer.feature.properties.tip || "";
-    let tezina = layer.feature.properties.tezina || "";
+    let tip = layer.feature.properties?.tip || "";
+    let tezina = layer.feature.properties?.tezina || "";
 
     let tipMatch = tipovi.length === 0 || tipovi.some(t => tip.includes(t));
     let tezinaMatch = tezine.length === 0 || tezine.includes(tezina);

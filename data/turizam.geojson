@@ -1,8 +1,0 @@
-{
-"type": "FeatureCollection",
-"name": "turizam",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { "id": 1, "naziv": "Apart hotel Kopaonik", "kategorija": "hotel", "opis_srb": "Moderan Apart hotel u Brzeću, na korak od gondole Bela reka koja vas vodi direktno na vrh Kopaonika. Uživajte u komfornim apartmanima, besplatnom internetu i mirnom planinskom ambijentu savršenom za aktivan odmor i opuštanje tokom cele godine.", "opis_eng": "Modern Apart hotel in Brzeće, steps away from the Gondola linking you to the heart of Kopaonik. We offer comfy apartments, free Wi-Fi, and a peaceful mountain setting perfect for ski lovers and summer hikers. Your ultimate mountain escape starts here!", "telefon": "+381653823264", "website": "https://kopapartmani.co.rs/", "slika": "image/aparthotelkopaonik.jpg", "logo": "logos/aparthotelkopaonik.svg" }, "geometry": { "type": "Point", "coordinates": [ 20.879064720183088, 43.287411357301323 ] } }
-]
-}

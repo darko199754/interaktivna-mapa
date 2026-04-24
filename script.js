@@ -40,7 +40,7 @@ fetch("data/staze.geojson")
   .then(data => stazeLayer.addData(data));
 
 
-// ---------------- LOKACIJE (IKONICE + AUDIO + NAVIGACIJA) ----------------
+// ---------------- LOKACIJE (IKONICE + AUDIO SRB/ENG + NAVIGACIJA) ----------------
 
 var lokacijeLayer = L.geoJSON(null, {
 
@@ -68,10 +68,17 @@ var lokacijeLayer = L.geoJSON(null, {
 
       <p>${p.Opis_SRB || ""}</p>
 
-      ${p.Audio ? `
+      ${p.audio_SRB ? `
+        <b>🎧 Srpski:</b><br>
         <audio controls>
-          <source src="${p.Audio}" type="audio/mpeg">
-          Vaš browser ne podržava audio.
+          <source src="${p.audio_SRB}" type="audio/mpeg">
+        </audio>
+      ` : ""}
+
+      ${p.audio_ENG ? `
+        <b>🎧 English:</b><br>
+        <audio controls>
+          <source src="${p.audio_ENG}" type="audio/mpeg">
         </audio>
       ` : ""}
 

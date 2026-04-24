@@ -70,12 +70,17 @@ fetch("data/lokacije.geojson")
   .then(data => lokacijeLayer.addData(data));
 
 
-// ---------------- TURIZAM ----------------
+// ---------------- TURIZAM (IKONICE FIX) ----------------
 
 var turizamLayer = L.geoJSON(null, {
 
   pointToLayer: function(feature, latlng) {
-    return L.marker(latlng);
+    return L.marker(latlng, {
+      icon: L.icon({
+        iconUrl: feature.properties.Ikonica || "icons/default.png",
+        iconSize: [40, 40] // veće ikonice
+      })
+    });
   },
 
   onEachFeature: function(feature, layer) {

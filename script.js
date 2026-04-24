@@ -2,8 +2,8 @@
 
 var map = L.map('map').setView([43.285, 20.879], 13);
 
-L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-  attribution: 'Map data: OpenStreetMap'
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: 'OpenStreetMap'
 }).addTo(map);
 
 
@@ -11,11 +11,13 @@ L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 
 var stazeLayer = L.geoJSON(null, {
   style: function(feature) {
+
+    let tezina = feature.properties.tezina;
     let boja = "blue";
 
-    if (feature.properties.tezina === "laka") boja = "green";
-    if (feature.properties.tezina === "srednja") boja = "orange";
-    if (feature.properties.tezina === "teska") boja = "red";
+    if (tezina === "laka") boja = "green";
+    if (tezina === "srednja") boja = "orange";
+    if (tezina === "teska") boja = "red";
 
     return { color: boja, weight: 4 };
   },
@@ -24,11 +26,11 @@ var stazeLayer = L.geoJSON(null, {
     let p = feature.properties;
 
     layer.bindPopup(`
-      <h3>${p.naziv}</h3>
+      <b>${p.naziv}</b><br>
       ${p.opis_SRB || ""}
-      <br><b>Dužina:</b> ${p.duzina_km} km
-      <br><b>Trajanje:</b> ${p.trajanje}
-      <br><b>Visinska razlika:</b> ${p.visinska_r} m
+      <br>Dužina: ${p.duzina_km} km
+      <br>Trajanje: ${p.trajanje}
+      <br>Visinska razlika: ${p.visinska_r} m
     `);
   }
 }).addTo(map);
@@ -38,10 +40,9 @@ fetch("data/staze.geojson")
   .then(data => stazeLayer.addData(data));
 
 
-// ---------------- LOKACIJE (BEZ IKONICA) ----------------
+// ---------------- LOKACIJE ----------------
 
 var lokacijeLayer = L.geoJSON(null, {
-
   pointToLayer: function(feature, latlng) {
     return L.marker(latlng);
   },
@@ -50,13 +51,11 @@ var lokacijeLayer = L.geoJSON(null, {
     let p = feature.properties;
 
     layer.bindPopup(`
-      <h3>${p.Naziv}</h3>
+      <b>${p.Naziv}</b><br>
       ${p.Slika ? `<img src="${p.Slika}">` : ""}
       <p>${p.Opis_SRB || ""}</p>
-      ${p.audio_SRB ? `<audio controls src="${p.audio_SRB}"></audio>` : ""}
     `);
   }
-
 }).addTo(map);
 
 fetch("data/lokacije.geojson")
@@ -67,7 +66,6 @@ fetch("data/lokacije.geojson")
 // ---------------- TURIZAM ----------------
 
 var turizamLayer = L.geoJSON(null, {
-
   pointToLayer: function(feature, latlng) {
     return L.marker(latlng);
   },
@@ -76,15 +74,11 @@ var turizamLayer = L.geoJSON(null, {
     let p = feature.properties;
 
     layer.bindPopup(`
-      <h3>${p.naziv}</h3>
+      <b>${p.naziv}</b><br>
       ${p.slika ? `<img src="${p.slika}">` : ""}
       <p>${p.opis_srb || ""}</p>
-      📞 ${p.telefon || ""}
-      <br>
-      ${p.website ? `<a href="${p.website}" target="_blank">🌐 Website</a>` : ""}
     `);
   }
-
 }).addTo(map);
 
 fetch("data/turizam.geojson")
@@ -100,28 +94,49 @@ document.querySelectorAll('.filters input').forEach(el => {
 
 function filterMap() {
 
-  let tipovi = [...document.querySelectorAll('input[value]:checked')].map(i => i.value);
+  let tipovi = [...document.querySelectorAll('.tip:checked')].map(i => i.value);
+  let tezine = [...document.querySelectorAll('.tezina:checked')].map(i => i.value);
 
   stazeLayer.eachLayer(layer => {
 
     let tip = layer.feature.properties.tip;
+    let tezina = layer.feature.properties.tezina;
 
-    if (tipovi.some(t => tip.includes(t))) {
+    let tipMatch = tipovi.some(t => tip.includes(t));
+    let tezinaMatch = tezine.includes(tezina);
+
+    if (tipMatch && tezinaMatch) {
       layer.addTo(map);
     } else {
       map.removeLayer(layer);
     }
   });
 
+  // lokacije
   if (document.getElementById("lokacijeToggle").checked) {
     map.addLayer(lokacijeLayer);
   } else {
     map.removeLayer(lokacijeLayer);
   }
 
+  // turizam
   if (document.getElementById("turizamToggle").checked) {
     map.addLayer(turizamLayer);
   } else {
     map.removeLayer(turizamLayer);
   }
 }
+
+
+// ---------------- POPUP FILTER ----------------
+
+const btn = document.getElementById("filterBtn");
+const panel = document.getElementById("filterPanel");
+
+btn.addEventListener("click", () => {
+  panel.style.display = panel.style.display === "block" ? "none" : "block";
+});
+
+map.on('click', function() {
+  panel.style.display = "none";
+});

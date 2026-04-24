@@ -7,37 +7,65 @@ html, body {
   height: 100vh;
 }
 
-/* Dugme */
+/* Filter dugme */
 #filterBtn {
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 1100;
-  padding: 10px 14px;
+  padding: 10px;
   background: #2c3e50;
   color: white;
-  border: none;
   border-radius: 8px;
-  cursor: pointer;
+  border: none;
+}
+
+/* GPS */
+#gpsBtn {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+  z-index: 1100;
+  padding: 10px;
+  background: #27ae60;
+  color: white;
+  border-radius: 50%;
+  border: none;
+}
+
+/* Search */
+#searchBox {
+  position: absolute;
+  top: 110px;
+  right: 10px;
+  z-index: 1100;
+  padding: 8px;
+  width: 140px;
+}
+
+#searchBtn {
+  position: absolute;
+  top: 110px;
+  right: 160px;
+  z-index: 1100;
+  padding: 8px;
+  background: #2980b9;
+  color: white;
+  border: none;
 }
 
 /* Panel */
 .filters {
   position: absolute;
-  top: 60px;
+  top: 160px;
   right: 10px;
   background: white;
   padding: 12px;
   z-index: 1000;
-  max-height: 80vh;
-  overflow-y: auto;
   border-radius: 10px;
-  font-size: 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.2);
   display: none;
 }
 
 .leaflet-popup-content img {
   width: 100%;
-  margin-top: 5px;
 }

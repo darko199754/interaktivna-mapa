@@ -2,7 +2,6 @@
 
 var map = L.map('map').setView([43.285, 20.879], 13);
 
-// 🔥 OZBILJNIJI TILE (planinski izgled)
 L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
   attribution: 'Map data: OpenStreetMap'
 }).addTo(map);
@@ -28,10 +27,10 @@ var stazeLayer = L.geoJSON(null, {
       ${p.opis_SRB || ""}
       <br><b>Dužina:</b> ${p.duzina_km} km
       <br><b>Trajanje:</b> ${p.trajanje}
-      <br><b>Uspon:</b> ${p.visinska_r} m
+      <br><b>Visinska razlika:</b> ${p.visinska_r} m
     `);
 
-    // hover highlight
+    // hover efekat
     layer.on('mouseover', function () {
       layer.setStyle({ weight: 6 });
     });
@@ -42,10 +41,10 @@ var stazeLayer = L.geoJSON(null, {
   }
 }).addTo(map);
 
-// učitaj staze
 fetch("data/staze.geojson")
   .then(res => res.json())
   .then(data => stazeLayer.addData(data));
+
 
 // ---------------- LOKACIJE ----------------
 
@@ -54,7 +53,7 @@ var lokacijeLayer = L.geoJSON(null, {
   pointToLayer: function(feature, latlng) {
     return L.marker(latlng, {
       icon: L.icon({
-        iconUrl: feature.properties.ikonica,
+        iconUrl: feature.properties.Ikonica,
         iconSize: [32, 32]
       })
     });
@@ -65,7 +64,7 @@ var lokacijeLayer = L.geoJSON(null, {
 
     layer.bindPopup(`
       <h3>${p.Naziv}</h3>
-      <img src="${p.Slika}">
+      ${p.Slika ? `<img src="${p.Slika}">` : ""}
       <p>${p.Opis_SRB || ""}</p>
       ${p.audio_SRB ? `<audio controls src="${p.audio_SRB}"></audio>` : ""}
     `);
@@ -73,10 +72,10 @@ var lokacijeLayer = L.geoJSON(null, {
 
 }).addTo(map);
 
-// učitaj lokacije
 fetch("data/lokacije.geojson")
   .then(res => res.json())
   .then(data => lokacijeLayer.addData(data));
+
 
 // ---------------- TURIZAM ----------------
 
@@ -96,22 +95,22 @@ var turizamLayer = L.geoJSON(null, {
 
     layer.bindPopup(`
       <h3>${p.naziv}</h3>
-      <img src="${p.slika}">
-      <p>${p.opis_srb}</p>
+      ${p.slika ? `<img src="${p.slika}">` : ""}
+      <p>${p.opis_srb || ""}</p>
       📞 ${p.telefon || ""}
       <br>
-      <a href="${p.website}" target="_blank">🌐 Website</a>
+      ${p.website ? `<a href="${p.website}" target="_blank">🌐 Website</a>` : ""}
     `);
   }
 
 }).addTo(map);
 
-// učitaj turizam
 fetch("data/turizam.geojson")
   .then(res => res.json())
   .then(data => turizamLayer.addData(data));
 
-// ---------------- FILTERI ----------------
+
+// ---------------- FILTER ----------------
 
 document.querySelectorAll('.filters input').forEach(el => {
   el.addEventListener('change', filterMap);
@@ -131,14 +130,12 @@ function filterMap() {
     }
   });
 
-  // toggle lokacije
   if (document.getElementById("lokacijeToggle").checked) {
     map.addLayer(lokacijeLayer);
   } else {
     map.removeLayer(lokacijeLayer);
   }
 
-  // toggle turizam
   if (document.getElementById("turizamToggle").checked) {
     map.addLayer(turizamLayer);
   } else {

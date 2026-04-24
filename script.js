@@ -2,10 +2,8 @@
 
 var map = L.map('map').setView([43.285, 20.879], 13);
 
-// Light mapa (lepša)
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap',
-  opacity: 0.9
 }).addTo(map);
 
 
@@ -19,7 +17,7 @@ var stazeLayer = L.geoJSON(null, {
     if (feature.properties.tezina === "srednja") boja = "orange";
     if (feature.properties.tezina === "teska") boja = "red";
 
-    return { color: boja, weight: 4, opacity: 0.9 };
+    return { color: boja, weight: 4 };
   },
 
   onEachFeature: function(feature, layer) {
@@ -32,14 +30,6 @@ var stazeLayer = L.geoJSON(null, {
       <br><b>Trajanje:</b> ${p.trajanje}
       <br><b>Visinska razlika:</b> ${p.visinska_r} m
     `);
-
-    layer.on('mouseover', function () {
-      layer.setStyle({ weight: 6 });
-    });
-
-    layer.on('mouseout', function () {
-      stazeLayer.resetStyle(layer);
-    });
   }
 }).addTo(map);
 
@@ -53,7 +43,12 @@ fetch("data/staze.geojson")
 var lokacijeLayer = L.geoJSON(null, {
 
   pointToLayer: function(feature, latlng) {
-    return L.marker(latlng);
+    return L.marker(latlng, {
+      icon: L.icon({
+        iconUrl: feature.properties.Ikonica,
+        iconSize: [32, 32]
+      })
+    });
   },
 
   onEachFeature: function(feature, layer) {
@@ -89,9 +84,6 @@ var turizamLayer = L.geoJSON(null, {
       <h3>${p.naziv}</h3>
       ${p.slika ? `<img src="${p.slika}">` : ""}
       <p>${p.opis_srb || ""}</p>
-      📞 ${p.telefon || ""}
-      <br>
-      ${p.website ? `<a href="${p.website}" target="_blank">🌐 Website</a>` : ""}
     `);
   }
 
@@ -110,15 +102,16 @@ document.querySelectorAll('.filters input').forEach(el => {
 
 function filterMap() {
 
-  let selected = [...document.querySelectorAll('.filters input[value]:checked')].map(i => i.value);
+  let tipovi = [...document.querySelectorAll('.tip:checked')].map(i => i.value);
+  let tezine = [...document.querySelectorAll('.tezina:checked')].map(i => i.value);
 
   stazeLayer.eachLayer(layer => {
 
-    let tip = layer.feature.properties.tip;
-    let tezina = layer.feature.properties.tezina;
+    let tip = layer.feature.properties.tip || "";
+    let tezina = layer.feature.properties.tezina || "";
 
-    let tipMatch = selected.some(v => tip.includes(v));
-    let tezinaMatch = selected.includes(tezina);
+    let tipMatch = tipovi.length === 0 || tipovi.some(t => tip.includes(t));
+    let tezinaMatch = tezine.length === 0 || tezine.includes(tezina);
 
     if (tipMatch && tezinaMatch) {
       layer.addTo(map);
@@ -141,7 +134,7 @@ function filterMap() {
 }
 
 
-// ---------------- FILTER PANEL TOGGLE ----------------
+// ---------------- FILTER PANEL ----------------
 
 const btn = document.getElementById("filterBtn");
 const panel = document.getElementById("filterPanel");
@@ -150,7 +143,6 @@ btn.addEventListener("click", () => {
   panel.style.display = panel.style.display === "block" ? "none" : "block";
 });
 
-// klik na mapu zatvara panel
 map.on('click', function() {
   panel.style.display = "none";
 });

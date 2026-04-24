@@ -40,7 +40,7 @@ fetch("data/staze.geojson")
   .then(data => stazeLayer.addData(data));
 
 
-// ---------------- LOKACIJE ----------------
+// ---------------- LOKACIJE (NAVIGACIJA) ----------------
 
 var lokacijeLayer = L.geoJSON(null, {
 
@@ -55,11 +55,18 @@ var lokacijeLayer = L.geoJSON(null, {
 
   onEachFeature: function(feature, layer) {
     let p = feature.properties;
+    let lat = feature.geometry.coordinates[1];
+    let lng = feature.geometry.coordinates[0];
 
     layer.bindPopup(`
       <b>${p.Naziv}</b><br>
       ${p.Slika ? `<img src="${p.Slika}">` : ""}
       <p>${p.Opis_SRB || ""}</p>
+
+      <br>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">
+        🧭 Idi ovde
+      </a>
     `);
   }
 
@@ -70,7 +77,7 @@ fetch("data/lokacije.geojson")
   .then(data => lokacijeLayer.addData(data));
 
 
-// ---------------- TURIZAM (IKONICE FIX) ----------------
+// ---------------- TURIZAM (NAVIGACIJA) ----------------
 
 var turizamLayer = L.geoJSON(null, {
 
@@ -78,18 +85,25 @@ var turizamLayer = L.geoJSON(null, {
     return L.marker(latlng, {
       icon: L.icon({
         iconUrl: feature.properties.Ikonica || "icons/default.png",
-        iconSize: [40, 40] // veće ikonice
+        iconSize: [40, 40]
       })
     });
   },
 
   onEachFeature: function(feature, layer) {
     let p = feature.properties;
+    let lat = feature.geometry.coordinates[1];
+    let lng = feature.geometry.coordinates[0];
 
     layer.bindPopup(`
       <b>${p.naziv}</b><br>
       ${p.slika ? `<img src="${p.slika}">` : ""}
       <p>${p.opis_srb || ""}</p>
+
+      <br>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">
+        🧭 Idi ovde
+      </a>
     `);
   }
 

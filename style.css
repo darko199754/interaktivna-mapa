@@ -20,7 +20,7 @@ html, body {
   border: none;
 }
 
-/* GPS */
+/* GPS dugme */
 #gpsBtn {
   position: absolute;
   top: 60px;
@@ -31,6 +31,7 @@ html, body {
   color: white;
   border-radius: 50%;
   border: none;
+  cursor: pointer;
 }
 
 /* Search */
@@ -54,7 +55,7 @@ html, body {
   border: none;
 }
 
-/* Panel */
+/* Filter panel */
 .filters {
   position: absolute;
   top: 160px;

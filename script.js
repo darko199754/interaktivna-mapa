@@ -1,6 +1,11 @@
 // ---------------- MAPA ----------------
 
 var map = L.map('map').setView([43.285, 20.879], 13);
+var tourismCluster = L.markerClusterGroup({
+    spiderfyOnMaxZoom: true,
+    showCoverageOnHover: false,
+    zoomToBoundsOnClick: true
+});
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap & Carto'
@@ -124,21 +129,17 @@ function getTourismIcon(kategorija){
 
     }
 
-    return L.icon({
+   return L.icon({
 
-        iconUrl: "icons/pins/" + marker,
+    iconUrl: "icons/pins/" + marker,
 
-        shadowUrl: "icons/pins/marker-shadow.png",
+    iconSize: [25,41],
 
-        iconSize: [25,41],
+    iconAnchor: [12,41],
 
-        iconAnchor: [12,41],
+    popupAnchor: [1,-34]
 
-        popupAnchor: [1,-34],
-
-        shadowSize: [41,41]
-
-    });
+});
 
 }
 
@@ -265,12 +266,16 @@ var turizamLayer = L.geoJSON(null,{
 
 
 fetch("data/turizam.geojson")
-
 .then(res=>res.json())
-
 .then(data=>{
 
     turizamLayer.addData(data);
+
+    tourismCluster.addLayer(turizamLayer);
+
+    map.addLayer(tourismCluster);
+
+});
 
 });
 

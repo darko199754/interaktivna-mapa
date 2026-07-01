@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
-<meta charset="utf-8" />
+    <meta charset="utf-8" />
 
-<title>Interaktivna mapa</title>
+    <title>Interaktivna mapa</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Leaflet -->
+    <!-- Leaflet -->
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
-<!-- Font Awesome -->
+    <!-- Marker Cluster -->
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
 
-<!-- Awesome Markers -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
 
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.css">
+    <!-- Tvoj CSS -->
 
-<link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="style.css?v=2"/>
 
 </head>
 
@@ -42,37 +44,37 @@ href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.4/leafl
 
 <div class="filters" id="filterPanel">
 
-<h3>Filter</h3>
+    <h3>Filter</h3>
 
-<b>Tip staze</b><br>
+    <b>Tip staze</b><br>
 
-<label><input type="checkbox" class="tip" value="pesacka" checked> Pešačka</label><br>
+    <label><input type="checkbox" class="tip" value="pesacka" checked> Pešačka</label><br>
 
-<label><input type="checkbox" class="tip" value="biciklisticka" checked> Biciklistička</label><br>
+    <label><input type="checkbox" class="tip" value="biciklisticka" checked> Biciklistička</label><br>
 
-<label><input type="checkbox" class="tip" value="kvad" checked> Kvad</label>
+    <label><input type="checkbox" class="tip" value="kvad" checked> Kvad</label>
 
-<br><br>
+    <br><br>
 
-<b>Težina</b><br>
+    <b>Težina</b><br>
 
-<label><input type="checkbox" class="tezina" value="laka" checked> Laka</label><br>
+    <label><input type="checkbox" class="tezina" value="laka" checked> Laka</label><br>
 
-<label><input type="checkbox" class="tezina" value="srednja" checked> Srednja</label><br>
+    <label><input type="checkbox" class="tezina" value="srednja" checked> Srednja</label><br>
 
-<label><input type="checkbox" class="tezina" value="teska" checked> Teška</label>
+    <label><input type="checkbox" class="tezina" value="teska" checked> Teška</label>
 
-<br><br>
+    <br><br>
 
-<b>Lokacije</b><br>
+    <b>Lokacije</b><br>
 
-<label><input type="checkbox" id="lokacijeToggle" checked> Prikaži</label>
+    <label><input type="checkbox" id="lokacijeToggle" checked> Prikaži</label>
 
-<br><br>
+    <br><br>
 
-<b>Turizam</b><br>
+    <b>Turizam</b><br>
 
-<label><input type="checkbox" id="turizamToggle" checked> Prikaži</label>
+    <label><input type="checkbox" id="turizamToggle" checked> Prikaži</label>
 
 </div>
 
@@ -80,22 +82,20 @@ href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.4/leafl
 
 <div id="routesPanel">
 
-<div class="routesHeader">
+    <div class="routesHeader">
 
-<h2>🥾 Sve staze</h2>
+        <h2>🥾 Sve staze</h2>
 
-<button id="closeRoutes">✖</button>
+        <button id="closeRoutes">✖</button>
 
-</div>
+    </div>
 
-<input
-id="routeSearch"
-type="text"
-placeholder="Pretraži stazu...">
+    <input
+        id="routeSearch"
+        type="text"
+        placeholder="Pretraži stazu...">
 
-<div id="routeList">
-
-</div>
+    <div id="routeList"></div>
 
 </div>
 
@@ -103,13 +103,14 @@ placeholder="Pretraži stazu...">
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-<!-- Awesome Markers -->
+<!-- Marker Cluster -->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
-<!-- Tvoj JS -->
+<!-- Tvoj JavaScript -->
 
-<script src="script.js?v=6"></script>
+<script src="script.js?v=7"></script>
 
 </body>
+
 </html>

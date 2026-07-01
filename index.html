@@ -1,14 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <title>Interaktivna mapa</title>
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8" />
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
-  <link rel="stylesheet" href="style.css"/>
+<title>Interaktivna mapa</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Leaflet -->
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+<!-- Font Awesome -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<!-- Awesome Markers -->
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.css">
+
+<link rel="stylesheet" href="style.css"/>
+
 </head>
+
 <body>
 
 <div id="map"></div>
@@ -21,72 +38,78 @@
 
 <button id="routesBtn">🥾</button>
 
-
 <!-- FILTER -->
 
 <div class="filters" id="filterPanel">
 
-  <h3>Filter</h3>
+<h3>Filter</h3>
 
-  <b>Tip staze</b><br>
+<b>Tip staze</b><br>
 
-  <label><input type="checkbox" class="tip" value="pesacka" checked> Pešačka</label><br>
+<label><input type="checkbox" class="tip" value="pesacka" checked> Pešačka</label><br>
 
-  <label><input type="checkbox" class="tip" value="biciklisticka" checked> Biciklistička</label><br>
+<label><input type="checkbox" class="tip" value="biciklisticka" checked> Biciklistička</label><br>
 
-  <label><input type="checkbox" class="tip" value="kvad" checked> Kvad</label>
+<label><input type="checkbox" class="tip" value="kvad" checked> Kvad</label>
 
-  <br><br>
+<br><br>
 
-  <b>Težina</b><br>
+<b>Težina</b><br>
 
-  <label><input type="checkbox" class="tezina" value="laka" checked> Laka</label><br>
+<label><input type="checkbox" class="tezina" value="laka" checked> Laka</label><br>
 
-  <label><input type="checkbox" class="tezina" value="srednja" checked> Srednja</label><br>
+<label><input type="checkbox" class="tezina" value="srednja" checked> Srednja</label><br>
 
-  <label><input type="checkbox" class="tezina" value="teska" checked> Teška</label>
+<label><input type="checkbox" class="tezina" value="teska" checked> Teška</label>
 
-  <br><br>
+<br><br>
 
-  <b>Lokacije</b><br>
+<b>Lokacije</b><br>
 
-  <label><input type="checkbox" id="lokacijeToggle" checked> Prikaži</label>
+<label><input type="checkbox" id="lokacijeToggle" checked> Prikaži</label>
 
-  <br><br>
+<br><br>
 
-  <b>Turizam</b><br>
+<b>Turizam</b><br>
 
-  <label><input type="checkbox" id="turizamToggle" checked> Prikaži</label>
+<label><input type="checkbox" id="turizamToggle" checked> Prikaži</label>
 
 </div>
-
 
 <!-- PANEL STAZE -->
 
 <div id="routesPanel">
 
-    <div class="routesHeader">
+<div class="routesHeader">
 
-        <h2>🥾 Sve staze</h2>
+<h2>🥾 Sve staze</h2>
 
-        <button id="closeRoutes">✖</button>
-
-    </div>
-
-    <input
-        id="routeSearch"
-        type="text"
-        placeholder="Pretraži stazu...">
-
-    <div id="routeList">
-
-    </div>
+<button id="closeRoutes">✖</button>
 
 </div>
 
+<input
+id="routeSearch"
+type="text"
+placeholder="Pretraži stazu...">
+
+<div id="routeList">
+
+</div>
+
+</div>
+
+<!-- Leaflet -->
+
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-<script src="script.js?v=5"></script>
+<!-- Awesome Markers -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.js"></script>
+
+<!-- Tvoj JS -->
+
+<script src="script.js?v=6"></script>
 
 </body>
 </html>

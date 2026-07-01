@@ -198,11 +198,6 @@ document.getElementById("filterBtn").onclick = function() {
   let panel = document.getElementById("filterPanel");
   panel.style.display = panel.style.display === "block" ? "none" : "block";
 };
-
-document.getElementById("filterBtn").onclick = function() {
-  let panel = document.getElementById("filterPanel");
-  panel.style.display = panel.style.display === "block" ? "none" : "block";
-};
 // ===============================
 // PANEL STAZE
 // ===============================
@@ -286,9 +281,6 @@ function createRouteList(){
     });
 
 }
-fetch("data/staze.geojson")
-  .then(res => res.json())
-  .then(data => stazeLayer.addData(data));
 fetch("data/staze.geojson")
 .then(res=>res.json())
 .then(data=>{

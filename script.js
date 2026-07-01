@@ -96,46 +96,183 @@ fetch("data/lokacije.geojson")
   .then(res => res.json())
   .then(data => lokacijeLayer.addData(data));
 
-
 // ---------------- TURIZAM ----------------
 
-var turizamLayer = L.geoJSON(null, {
+// Funkcija koja određuje boju pina prema kategoriji
 
-  pointToLayer: function(feature, latlng) {
+function getTourismIcon(kategorija){
 
-    let iconPath = feature.properties.Ikonica || "icons/default.png";
+    kategorija = (kategorija || "").toLowerCase();
 
-    return L.marker(latlng, {
-      icon: L.icon({
-        iconUrl: iconPath,
-        iconSize: [40, 40]
-      })
+    let marker = "blue-marker.png";
+
+    if(kategorija === "apartman" || kategorija === "apartmani"){
+
+        marker = "green-marker.png";
+
+    }
+
+    if(kategorija === "restoran"){
+
+        marker = "red-marker.png";
+
+    }
+
+    if(kategorija === "hotel" || kategorija === "spa hotel"){
+
+        marker = "blue-marker.png";
+
+    }
+
+    return L.icon({
+
+        iconUrl: "icons/pins/" + marker,
+
+        shadowUrl: "icons/pins/marker-shadow.png",
+
+        iconSize: [25,41],
+
+        iconAnchor: [12,41],
+
+        popupAnchor: [1,-34],
+
+        shadowSize: [41,41]
+
     });
-  },
 
-  onEachFeature: function(feature, layer) {
-    let p = feature.properties;
-    let lat = feature.geometry.coordinates[1];
-    let lng = feature.geometry.coordinates[0];
+}
 
-    layer.bindPopup(`
-      <b>${p.naziv}</b><br>
-      ${p.slika ? `<img src="${p.slika}">` : ""}
-      <p>${p.opis_srb || ""}</p>
 
-      <br>
 
-      <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}" target="_blank">
+var turizamLayer = L.geoJSON(null,{
+
+    pointToLayer:function(feature,latlng){
+
+        return L.marker(latlng,{
+
+            icon:getTourismIcon(feature.properties.kategorija)
+
+        });
+
+    },
+
+
+
+    onEachFeature:function(feature,layer){
+
+        let p = feature.properties;
+
+        let lat = feature.geometry.coordinates[1];
+
+        let lng = feature.geometry.coordinates[0];
+
+
+
+        let popup = "";
+
+
+
+        popup += `<h3>${p.naziv || ""}</h3>`;
+
+
+
+        if(p.slika){
+
+            popup += `
+
+                <img src="${p.slika}">
+
+            `;
+
+        }
+
+
+
+        if(p.opis_srb){
+
+            popup += `
+
+                <p>${p.opis_srb}</p>
+
+            `;
+
+        }
+
+
+
+        popup += `<div class="popupButtons">`;
+
+
+
+        if(p.telefon){
+
+            popup += `
+
+            <a href="tel:${p.telefon}">
+
+            📞 Pozovi
+
+            </a>
+
+            `;
+
+        }
+
+
+
+        if(p.website){
+
+            popup += `
+
+            <a href="${p.website}"
+
+               target="_blank">
+
+            🌍 Website
+
+            </a>
+
+            `;
+
+        }
+
+
+
+        popup += `
+
+        <a href="https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}"
+
+           target="_blank">
+
         🧭 Idi ovde
-      </a>
-    `);
-  }
+
+        </a>
+
+        `;
+
+
+
+        popup += `</div>`;
+
+
+
+        layer.bindPopup(popup);
+
+    }
 
 }).addTo(map);
 
+
+
 fetch("data/turizam.geojson")
-  .then(res => res.json())
-  .then(data => turizamLayer.addData(data));
+
+.then(res=>res.json())
+
+.then(data=>{
+
+    turizamLayer.addData(data);
+
+});
 
 
 // ---------------- GPS ----------------
